@@ -17,6 +17,7 @@ include:
   - project: 'templates/ci'
     file: 'DockerInDockerTemplate.yml'
 
+#проводим тесты
 
 sonarqube-backend-sast:
   variables:
@@ -29,11 +30,12 @@ sonarqube-backend-sast:
       - backend/*
   image: sonarsource/sonar-scanner-cli:latest
   script:
+    - cd backend
     - sonar-scanner
       -Dsonar.projectKey=${SONAR_PROJECT_KEY_BACKEND}
-      -Dsonar.host.url=${SONARQUBE_URL_BACKEND}
+      -Dsonar.host.url=${SONARQUBE_URL}
       -Dsonar.login=${SONAR_LOGIN_BACKEND}
-      -Dsonar.projectName=${SONAR_PROJECT_NAME}
+      -Dsonar.projectName=${SONAR_PROJECT_NAME_BACKEND}
   needs:
     - build-backend
 
@@ -49,6 +51,7 @@ golang-test:
     - changes:
         - backend/**/*
 
+# собираем приложение, и сохраняем ID артефактов
 
 build-backend:
   image:
@@ -75,6 +78,8 @@ build-backend:
     - changes:
         - backend/**/*
 
+# копируем архив приложения в nexus
+
 release:
    stage: release
    script:
@@ -89,6 +94,7 @@ release:
       - changes:
            - backend/**/*
 
+# готовим образ приожения
 
 build-backend-image:
   stage: build_image
@@ -105,6 +111,9 @@ build-backend-image:
       -f Dockerfile
       .
     - docker push $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA
+
+
+# публикуем образ в container registry
 
 upload-backend:
   stage: release_image
