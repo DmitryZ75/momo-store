@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: momo-store
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - name: {{ .Chart.Name }}
+              containerPort: {{ .Values.appContainerPort }}
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/conf.d
+            - name: docker-socket
+              mountPath: /tmp/docker.sock
+      volumes:
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config-frontend
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+      imagePullSecrets:
+        - name: docker-config-secret

@@ -1,0 +1,22 @@
+stages:
+  - upload
+
+include:
+  - project: 'templates/ci'
+    file: 'DockerInDockerTemplate.yml'
+
+variables:
+  HELM_CHART_VERSION: 0.1.${CI_PIPELINE_ID}
+
+# пакуем charts и выкладываем в nexus
+
+build-helm-chart:
+  stage: upload
+  image: alpine/helm:latest
+  script:
+    - cd momo-store-chart
+    - echo "Current version - $HELM_CHART_VERSION"
+    - |
+      sed -i "s/^version:.*/version: $HELM_CHART_VERSION/" Chart.yaml
+    - helm package . -d ./helm-releases
+    - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file "./helm-releases/momo-store-$HELM_CHART_VERSION.tgz" "${NEXUS_REPO_URL_HELM}/momo-store-$HELM_CHART_VERSION.tgz"
