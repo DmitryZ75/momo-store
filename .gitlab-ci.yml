@@ -1,6 +1,8 @@
 stages:
   - module-pipelines
 
+# сборка фронтенда
+
 frontend:
   stage: module-pipelines
   trigger:
@@ -10,6 +12,8 @@ frontend:
   only:
     changes: # как только происходит изменение в папке frontend, запускается дочерний пайплайн, который лежит в этой папке
       - frontend/**/*
+
+# сборка бэкэкнда
 
 backend:
   stage: module-pipelines
@@ -22,11 +26,14 @@ backend:
       - backend/**/*
 
 
-# kubernetes:
-#   stage: module-pipelines
-#   trigger:
-#     include:
-#       - local: '/.k8.gitlab-ci.yml'
-#   only:
-#     changes:
-#       - kubernetes/**/*
+# сборка helm-charts
+
+helm:
+  stage: module-pipelines
+  trigger:
+    include:
+      - local: '/momo-store-chart/.gitlab-ci.yml'
+    strategy: depend
+  only:
+    changes:
+      - momo-store-chart/**/*
