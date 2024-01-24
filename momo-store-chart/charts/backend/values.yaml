@@ -1,6 +1,4 @@
-image:
-  repository: https://gitlab.praktikum-services.ru:5050/std-021-024/momo-store/momo-backend
-  tag: latest
+image: gitlab.praktikum-services.ru:5050/std-021-024/momo-store/momo-backend:latest
 replicas: 1
 revisionHistoryLimit: 15
 imagePullPolicy: Always
