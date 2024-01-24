@@ -1,7 +1,7 @@
+image:
+  repository: https://gitlab.praktikum-services.ru:5050/std-021-024/momo-store/momo-backend
+  tag: latest
 replicas: 1
-image: 
-    repository: gitlab.praktikum-services.ru:5050/std-021-024/momo-store/momo-backend:latest
-    tag: latest
 revisionHistoryLimit: 15
 imagePullPolicy: Always
 appContainerPort: 8081

@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: prometheus
+data:
+  {{- $files := .Files }}
+  {{- range $key, $value := .Files }}
+  {{- if hasPrefix "rules/" $key }}
+  {{ $key | trimPrefix "rules/" }}: {{ $files.Get $key | quote }}
+  {{- end }}
+  {{- end }}

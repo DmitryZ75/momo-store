@@ -1,0 +1,31 @@
+name: argo-cd
+home: https://github.com/argoproj/argo-helm
+sources:
+    - https://github.com/argoproj/argo-cd
+    - https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+version: 5.46.8-6
+description: A Helm chart for Argo CD, a declarative, GitOps continuous delivery tool for Kubernetes.
+keywords:
+    - argoproj
+    - argocd
+    - gitops
+maintainers:
+    - name: argoproj
+      email: ""
+      url: https://argoproj.github.io/
+icon: https://argo-cd.readthedocs.io/en/stable/assets/logo.png
+apiversion: v2
+condition: ""
+tags: ""
+appversion: v2.8.4
+deprecated: false
+annotations:
+    artifacthub.io/changes: |
+        - kind: fixed
+          description: Sync redis / redis-ha readOnlyRootFilesystem=true option from upstream. This was part of Argo CD 2.8.0.
+    artifacthub.io/signKey: |
+        fingerprint: 2B8F22F57260EFA67BE1C5824B11F800CD9D2252
+        url: https://argoproj.github.io/argo-helm/pgp_keys.asc
+kubeversion: '>=1.23.0-0'
+dependencies: []
+type: ""
