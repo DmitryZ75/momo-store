@@ -25,16 +25,31 @@
 
 
 
-FROM node:14.17.3-alpine as builder
-# Create app directory
-WORKDIR /usr/src/app
-COPY . .
-RUN npm install && VUE_APP_API_URL=http://backend:8081 npm run build
+# FROM node:14.17.3-alpine as builder
+# # Create app directory
+# WORKDIR /usr/src/app
+# COPY . .
+# RUN npm install && VUE_APP_API_URL=http://backend:8081 npm run build
 
+# FROM nginx:latest
+# WORKDIR /usr/share/nginx/html
+# COPY --from=builder /usr/src/app/dist .
+# RUN touch maintenance_off.html
+# WORKDIR /app
+# COPY --from=builder /usr/src/app/nginx.tmpl ./nginx.tmpl
+# EXPOSE 8080
+
+# build
+FROM node:16-alpine3.16 as builder
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install && VUE_APP_API_URL=http://backend:8081
+COPY . .
+RUN npm run build
+
+# release
 FROM nginx:latest
-WORKDIR /usr/share/nginx/html
-COPY --from=builder /usr/src/app/dist .
-RUN touch maintenance_off.html
 WORKDIR /app
-COPY --from=builder /usr/src/app/nginx.tmpl ./nginx.tmpl
+COPY --from=builder /usr/src/app/dist/frontend /usr/share/nginx/html
+COPY nginx.tmpl /app/
 EXPOSE 8080
