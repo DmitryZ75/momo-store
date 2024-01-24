@@ -12,7 +12,7 @@ spec:
   tls:
   - hosts:
     - momo-store.dmitryz.ru
-    secretName: app-tls
+    secretName: momo-app-tls
   rules:
   - host: {{ .Values.ingressHost }}
     http:
