@@ -26,6 +26,7 @@ build-frontend:
       - echo "ARTIFACT_JOB_ID=${CI_JOB_ID}" > CI_JOB_ID.txt 
       - cd frontend 
       - npm install 
+      - VUE_APP_API_URL=http://backend:8081
       - npm run build             
       - cd ..          
       - mkdir momo-frontend-${VERSION} 
