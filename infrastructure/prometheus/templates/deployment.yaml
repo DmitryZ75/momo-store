@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: prometheus
+    provider: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prometheus
+      annotations:
+        co.elastic.logs/enabled: "true"
+        co.elastic.logs/format: zap
+        co.elastic.logs/timezone: Europe/Moscow
+        co.elastic.logs/exclude_lines: skipping duplicate scrape target with identical labels;
+    spec:
+      terminationGracePeriodSeconds: 90
+      restartPolicy: Always
+      volumes:
+      - name: timezone-moscow
+        hostPath:
+          path: /usr/share/zoneinfo/Europe/Moscow
+      - name: config
+        configMap:
+          name: prometheus-conf
+      - name: prometheus-rules
+        configMap:
+          name: prometheus-rules
+      containers:
+      - name: prometheus
+        image: prom/prometheus
+        args:
+          - --config.file=/etc/prometheus/prometheus.yml
+          - --web.enable-lifecycle
+          - --log.level=debug
+        ports:
+          - containerPort: 9090
+        volumeMounts:
+        {{- range $path, $bytes := .Files.Glob ( printf "rules/**.yaml") }}
+        {{- $name := base $path }}
+        - name: prometheus-rules
+          mountPath: {{- printf "/config/%s" $name | indent 1 }}
+          subPath: {{- printf "%s" $name | indent 1 }}
+        {{- end }}
+        - name: timezone-moscow
+          mountPath: /etc/localtime
+          readOnly: true
+        - name: config
+          mountPath: /etc/prometheus/
+          readOnly: true
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Gi

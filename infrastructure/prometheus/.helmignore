@@ -1,0 +1,6 @@
+.idea
+.gitlab-ci.yml
+.git
+test/
+Dockerfile
+*.sh
