@@ -1,9 +1,13 @@
 image: gitlab.praktikum-services.ru:5050/std-021-024/momo-store/momo-frontend:latest
 replicas: 1
 revisionHistoryLimit: 15
-imagePullPolicy: Always
+
 appContainerPort: 8080
 serviceContainerPort: 8080
 serviceContainerTargerPort: 8080
 ingressHost: momo-store.dmitryz.ru
 ingressContainerTargetPort: 8080
+
+imagePullPolicy: IfNotPresent
+strategy:
+  type: Recreate
