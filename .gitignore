@@ -1,5 +1,9 @@
 .tfvars
 terraform.tfstate
+.terraform
+.terraform.lock.hcl
+terraform.tfstate.backup
+kuberconfig
 
 # Binaries for programs and plugins
 *.exe
