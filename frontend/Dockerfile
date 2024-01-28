@@ -16,7 +16,7 @@ RUN addgroup --system frontuser && \
 		chown -R frontuser:frontuser /var/run/nginx.pid && \
 		mkdir -p /etc/nginx/dhparam && \
 		chown frontuser:frontuser /etc/nginx/dhparam
-COPY --chown=frontuser:frontuser --from=builder /app/dist/ /usr/share/nginx/html/
+COPY --chown=frontuser:frontuser --from=builder /app/dist/ /momo-store
 COPY --chown=frontuser:frontuser --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 ENV VUE_APP_API_URL: "backend:8081"
 USER frontuser

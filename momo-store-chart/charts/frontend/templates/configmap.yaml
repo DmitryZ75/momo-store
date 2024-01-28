@@ -7,9 +7,9 @@ data:
   nginx.conf: |
     server {
       listen 8080;
-
+      root /momo-store;
       location / {
-        root /usr/share/nginx/html;
+        root /;
         index index.html;
         try_files $uri $uri/ /index.html;
       }
