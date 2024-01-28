@@ -1,47 +1,47 @@
-# ---
-# groups:
-#   - name: Sausage store rules
-#     rules:
+---
+groups:
+  - name: Momo store rules
+    rules:
 
-#     - alert: InstanceDown
-#       expr: up{app="backend"} == 0
-#       for: 1m
-#       labels:
-#         severity: critical
-#         project: "sausage_store"
-#         component: "Backend"
+    - alert: InstanceDown
+      expr: up{app="backend"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        project: "momo_store"
+        component: "Backend"
 
-#     - alert: HTTPServerError500
-#       expr: http_requests_total{status="500"} > 0
-#       for: 1m
-#       labels:
-#         severity: critical
-#       annotations:
-#         summary: "HTTP 500 Internal Server Error"
-#         description: "Detected HTTP 500 errors on the server."
+    - alert: HTTPServerError500
+      expr: http_requests_total{status="500"} > 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "HTTP 500 Internal Server Error"
+        description: "Detected HTTP 500 errors on the server."
 
-#     - alert: HighDelayPOSTRequests
-#       expr: histogram_quantile(0.95, rate(http_server_requests_seconds_bucket{method="POST", status="200", uri="/api/orders"}[5m])) > 0.1
-#       for: 5m
-#       labels:
-#         severity: warning
-#       annotations:
-#         summary: "High Delay in POST Requests"
-#         description: "Detected high delay (95th percentile > 100ms) for successful POST requests to /api/orders over the last 5 minutes."
+    - alert: HighDelayPOSTRequests
+      expr: histogram_quantile(0.95, rate(http_server_requests_seconds_bucket{method="POST", status="200", uri="/api/orders"}[5m])) > 0.1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High Delay in POST Requests"
+        description: "Detected high delay (95th percentile > 100ms) for successful POST requests to /api/orders over the last 5 minutes."
 
-#     - alert: ActuatorPrometheusError
-#       expr: http_server_requests_seconds{uri="/actuator/prometheus"} > 0 and http_server_requests_seconds{status!="200", uri="/actuator/prometheus"} > 0
-#       for: 2m
-#       labels:
-#         severity: warning
-#       annotations:
-#         summary: "Actuator Prometheus Endpoint Error"
-#         description: "Detected errors on /actuator/prometheus endpoint in the last 2 minutes."
+    - alert: ActuatorPrometheusError
+      expr: http_server_requests_seconds{uri="/actuator/prometheus"} > 0 and http_server_requests_seconds{status!="200", uri="/actuator/prometheus"} > 0
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Actuator Prometheus Endpoint Error"
+        description: "Detected errors on /actuator/prometheus endpoint in the last 2 minutes."
   
-#     - alert: SuccessfulGETRequest
-#       expr: http_server_requests_seconds_count{method="GET", status="200", uri="/api/products"} > 0
-#       for: 1m
-#       labels:
-#         severity: critical
-#       annotations:
-#         summary: "Successful GET request on /api/products"
+    - alert: SuccessfulGETRequest
+      expr: http_server_requests_seconds_count{method="GET", status="200", uri="/api/products"} > 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Successful GET request on /api/products"
