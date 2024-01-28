@@ -26,21 +26,42 @@ build-frontend:
       - echo "ARTIFACT_JOB_ID=${CI_JOB_ID}" > CI_JOB_ID.txt 
       - cd frontend 
       - npm install 
-      - VUE_APP_API_URL=http://backend:8081
+      - NODE_ENV=production VUE_APP_API_URL=https://momo-store.dmitryz.ru
       - npm run build             
-      - cd ..          
-      - mkdir momo-frontend-${VERSION} 
-      - mv frontend/dist momo-frontend-${VERSION}
+      - cd .. 
+      - ls -la
+      - mkdir momo-${VERSION}
+      - mv frontend/dist momo-${VERSION}/momo-frontend-${VERSION} 
+      - ls -la
+      - pwd
+      - cd momo-${VERSION}
+      - ls -la
+      - du -sh momo-frontend-${VERSION}
    artifacts:
       paths:
-         - momo-frontend-${VERSION}
+         - momo-${VERSION}/momo-frontend-${VERSION} 
       reports:
          dotenv: CI_JOB_ID.txt 
    rules:
       - changes:
            - frontend/**/*
 
-# созадем образ дял фронтенда
+# прогоняем тесты
+
+sonarqube-frontend-sast:
+  stage: test
+  only:
+    changes:
+      - frontend/*
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - cd frontend
+    - sonar-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY_FRONT} -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=${SONAR_LOGIN_FRONT} -Dsonar.projectName=${SONAR_PROJECT_NAME_FRONT}
+  needs:
+    - build-frontend
+
+
+# создаем образ дял фронтенда
 
 build-frontend-image:
   stage: build-image
@@ -61,24 +82,13 @@ build-frontend-image:
     changes:
     - frontend/*
 
-# прогоняем тесты
-
-sonarqube-frontend-sast:
-  stage: test
-  only:
-    changes:
-      - frontend/*
-  image: sonarsource/sonar-scanner-cli:latest
-  script:
-    - cd frontend
-    - sonar-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY_FRONT} -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=${SONAR_LOGIN_FRONT} -Dsonar.projectName=${SONAR_PROJECT_NAME_FRONT}
-  needs:
-    - build-frontend
 
 
-# записываем образ в репозиторий
 
-upload-frontend-release:
+
+# публикуем образ в container registry
+
+upload-frontend-image:
   variables:
     GIT_STRATEGY: none
   image: docker:20.10.12-dind-rootless
@@ -111,19 +121,18 @@ telegram-notification-frontend:
     
 # копируем приложение в Nexus
 
-release:
+upload-release:
    stage: release
-   needs:
-     - build-frontend  
    script:
-      - >        
-         tar czvf momo-frontend-${VERSION}.tar.gz momo-frontend-${VERSION}
-      - >       
-         curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz ${NEXUS_REPO_URL_FRONT}/${VERSION}/momo-frontend-${VERSION}.tar.gz 
+      - ls -la  # List files and directories in the current location
+      - pwd     # Print the current working directory
+      - cd momo-${VERSION}
+      - pwd     # Print the current working directory after attempting to change
+      - tar -czvf momo-frontend-${VERSION}.tar.gz momo-frontend-${VERSION}
+      - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz ${NEXUS_REPO_URL_BACK}/${VERSION}/momo-frontend-${VERSION}.tar.gz
    rules:
       - changes:
-           - frontend/**/*  
-
+           - frontend/**/*
   
 #  environment: 
 #    name: review/$CI_COMMIT_REF_NAME
