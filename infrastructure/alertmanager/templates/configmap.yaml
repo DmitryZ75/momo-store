@@ -8,8 +8,8 @@ metadata:
     app: alertmanager
 data:
   alertmanager.yml: |
-global:
-    resolve_timeout: 1m
+    global:
+     resolve_timeout: 1m
     route:
       group_wait: 10s
       group_interval: 30s
