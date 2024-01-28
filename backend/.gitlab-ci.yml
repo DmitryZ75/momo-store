@@ -11,7 +11,7 @@ stages:
   - test
   - build_image
   - release
-  - release_image
+  - deploy-image
 
 include:
   - project: 'templates/ci'
@@ -80,7 +80,7 @@ build-backend:
 
 # копируем архив приложения в nexus
 
-release:
+upload-release:
    stage: release
    script:
       - apt install -y tar
@@ -115,8 +115,8 @@ build-backend-image:
 
 # публикуем образ в container registry
 
-upload-backend:
-  stage: release_image
+upload-backend-image:
+  stage: deploy-image
   variables:
     GIT_STRATEGY: none
   image: docker:20.10.12-dind-rootless
