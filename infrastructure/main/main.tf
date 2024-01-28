@@ -286,6 +286,22 @@ provider "yandex" {
   zone        = var.zone_id
 }
 
+
+# Резервирование статического IP адресса для приложения
+resource "yandex_vpc_address" "momo-store-address" {
+  name = "momo-store-address"
+  deletion_protection = "false"
+  external_ipv4_address {
+    zone_id = var.zone_id
+  }
+}
+
+
+output "momo-store-address" {
+  sensitive = false
+  value = yandex_vpc_address.momo-store-address.external_ipv4_address[*].address
+}
+
 # сохранение состояния
 
 terraform {

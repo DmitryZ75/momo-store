@@ -8,8 +8,8 @@ metadata:
     app: alertmanager
 data:
   alertmanager.yml: |
-    global:
-      resolve_timeout: 1m
+global:
+    resolve_timeout: 1m
     route:
       group_wait: 10s
       group_interval: 30s
@@ -27,4 +27,4 @@ data:
          - send_resolved: true
            bot_token: '5933756043:AAE8JLL5KIzgrNBeTP5e-1bkbJy4YRoeGjs'
            chat_id: -1001626584285
-           message: "{{ "{{" }} range .Alerts {{ "}}" }}{{ "{{" }} .Annotations.summary {{ "}}" }}\n{{ "{{" }} .Annotations.description }}\n{{ "{{" }} end {{ "}}" }}"
+           message: "{{ "{{" }} range .Alerts {{ "}}" }}*Namespace:* {{ "{{" }} .Labels.kubernetes_namespace {{ "}}" }}\n*Pod Name:* {{ "{{" }} .Labels.kubernetes_pod_name {{ "}}" }}\n*Instance:* {{ "{{" }} .Labels.instance {{ "}}" }}\n*Start Time:* {{ "{{" }} .StartsAt {{ "}}" }}\n*End Time:* {{ "{{" }} .EndsAt {{ "}}" }}\n*Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}\n*Description:* {{ "{{" }} .Annotations.description {{ "}}" }}\n{{ "{{" }} end {{ "}}" }}"
