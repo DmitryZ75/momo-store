@@ -12,6 +12,6 @@ imagePullPolicy: Always
 strategy:
   type: Recreate
 
-  proxy:
+proxy:
     host: backend
     port: 8081
