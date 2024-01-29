@@ -21,7 +21,7 @@ data:
       }
 
       location ~ ^/(categories|products|auth|metrics|orders)/ {
-        proxy_pass http://{{ .Values.proxy.host }}:{{ .Values.proxy.port }};
+        proxy_pass http://backend:8081;
       }
 
     }
