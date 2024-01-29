@@ -8,6 +8,10 @@ serviceContainerTargerPort: 8080
 ingressHost: momo-store.dmitryz.ru
 ingressContainerTargetPort: 8080
 
-imagePullPolicy: IfNotPresent
+imagePullPolicy: Always
 strategy:
   type: Recreate
+
+  proxy:
+    host: backend
+    port: 8081
