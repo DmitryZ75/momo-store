@@ -31,10 +31,12 @@ yandex_cloud_services:
     bearer_token: AQVN2lEABRzfufC54xF4basiVfH8kYeXRYXjkpzk
     scrape_interval: 60s  
 
+  - service: managed-kubernetes
+    serviceId: catodk2enlp20vvun657
+    folderId: b1gruij030ve9th5tfaq
+    bearer_token: AQVNyFphAYAn94MJ3H2H_x1n9Zj4AqmbmYBWsSxA
+    scrape_interval: 60s  
 
-#b1g3nvv8sngeob717ei7
-#c9q3ebbfe6l106v50eo4
-#c9q2e8urgnq5ofdncuf3
 
-#ajeqa400a76vn7objooh
-#AQVN2lEABRzfufC54xF4basiVfH8kYeXRYXjkpzk
+# aje8b9gg3017uu1gjn3t
+# AQVNyFphAYAn94MJ3H2H_x1n9Zj4AqmbmYBWsSxA
