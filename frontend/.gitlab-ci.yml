@@ -129,7 +129,7 @@ upload-release:
       - cd momo-${VERSION}
       - pwd     # Print the current working directory after attempting to change
       - tar -czvf momo-frontend-${VERSION}.tar.gz momo-frontend-${VERSION}
-      - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz ${NEXUS_REPO_URL_BACK}/${VERSION}/momo-frontend-${VERSION}.tar.gz
+      - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz ${NEXUS_REPO_URL_FRONT}/${VERSION}/momo-frontend-${VERSION}.tar.gz
    rules:
       - changes:
            - frontend/**/*
