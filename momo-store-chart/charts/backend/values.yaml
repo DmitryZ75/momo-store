@@ -6,7 +6,7 @@ serviceContainerTargerPort: 8081
 revisionHistoryLimit: 15
 imagePullPolicy: IfNotPresent
 strategy:
-  type: Always
+  type: Recreate
   rollingUpdate:
       maxUnavailable: 20%
       maxSurge: 1
