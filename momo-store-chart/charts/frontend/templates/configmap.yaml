@@ -9,7 +9,7 @@ data:
 
       listen {{ .Values.appContainerPort }};
 
-      location / {
+      location /momo-store {
         root   /usr/share/nginx/html;
         index  index.html;
         try_files $uri $uri/ /index.html;
