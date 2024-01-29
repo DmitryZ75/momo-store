@@ -5,20 +5,23 @@ metadata:
   name: nginx-config-frontend
 data:
   nginx.conf: |
-    upstream myproxy {
-      server backend:8081;
-    }
-
     server {
-        listen 80;
 
-        location / {
-            root   /app;
-            index  index.html;
-            try_files $uri $uri/ /index.html;
-        }
+      listen {{ .Values.port }};
 
-        location /api/ {
-            proxy_pass http://myproxy/;
-        }
+      location / {
+        root   /usr/share/nginx/html;
+        index  index.html;
+        try_files $uri $uri/ /index.html;
+      }
+      
+      error_page   500 502 503 504  /50x.html;
+      location = /50x.html {
+        root   /usr/share/nginx/html;
+      }
+
+      location ~ ^/(categories|products|auth|metrics|orders)/ {
+        proxy_pass http://{{ .Values.proxy.host }}:{{ .Values.proxy.port }};
+      }
+
     }

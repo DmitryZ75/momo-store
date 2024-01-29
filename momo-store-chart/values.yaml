@@ -8,20 +8,6 @@ backend:
 frontend:
   enabled: true
 
-# Секрет, необходимый, чтобы соединяться с Vault и получать креды для БД:
-# ---
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: vault
-#   labels:
-#     app: vault
-# data:
-#   vault_token: aHZzLkFmTTBqbEd0cVFESk5FekNleXI3ZXZOUQ==
-# type: Opaque
-
-
-# Секрет, необходимый, чтобы взаимодействовать с Docker Registry в GitLab:
 ---
 kind: Secret
 apiVersion: v1

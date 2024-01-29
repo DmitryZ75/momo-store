@@ -5,7 +5,5 @@ COPY . .
 RUN npx update-browserslist-db@latest $$ npm install && npm run build
 FROM nginx:latest
 WORKDIR /app
-COPY --from=builder /app/dist /app
+COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
-EXPOSE 443
-ENTRYPOINT ["nginx", "-g", "daemon off;"]

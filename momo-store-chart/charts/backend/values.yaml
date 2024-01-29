@@ -1,24 +1,12 @@
 image: gitlab.praktikum-services.ru:5050/std-021-024/momo-store/momo-backend:latest
-replicas: 1
+replicas: 2
 appContainerPort: 8081
 serviceContainerPort: 8081
 serviceContainerTargerPort: 8081
 revisionHistoryLimit: 15
-imagePullPolicy: IfNotPresent
+imagePullPolicy: Always
 strategy:
   type: Recreate
   rollingUpdate:
       maxUnavailable: 20%
       maxSurge: 1
-startupProbe:
-    initialDelaySeconds: 20
-    periodSeconds: 30
-    timeoutSeconds: 1
-    failureThreshold: 6
-resources:
-    requests:
-      memory: "128Mi"
-      cpu: "100m"
-    limits:
-      memory: "512Mi"
-      cpu: "400m"
