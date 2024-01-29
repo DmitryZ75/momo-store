@@ -7,7 +7,7 @@ data:
   nginx.conf: |
     server {
 
-      listen 80;
+      listen {{ .Values.appContainerPort }};
 
       location / {
         root   /usr/share/nginx/html;
