@@ -14,6 +14,10 @@ data:
     rule_files:
        - "/config/*"
     scrape_configs:
+    - job_name: momo-store
+      metrics_path: '/metrics'
+      static_configs:
+       - targets: ['backend:8081']
     - job_name: kubernetes-pods
       kubernetes_sd_configs:
       - role: pod
@@ -55,9 +59,3 @@ data:
           folderId: {{ $yandex.folderId }} 
           service: {{ $yandex.serviceId }} 
     {{ end -}}
-    alerting:
-      alertmanagers:
-      - scheme: http
-        static_configs:
-        - targets:
-          - "alertmanager:9093" 

@@ -35,8 +35,6 @@ yandex_cloud_services:
     serviceId: catodk2enlp20vvun657
     folderId: b1gruij030ve9th5tfaq
     bearer_token: AQVNyFphAYAn94MJ3H2H_x1n9Zj4AqmbmYBWsSxA
-    scrape_interval: 60s  
+    scrape_interval: 60s
 
-
-# aje8b9gg3017uu1gjn3t
-# AQVNyFphAYAn94MJ3H2H_x1n9Zj4AqmbmYBWsSxA
+host: "momo-store.dmitryz.ru"
