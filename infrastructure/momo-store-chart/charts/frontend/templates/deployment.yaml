@@ -23,6 +23,11 @@ spec:
           ports:
             - name: {{ .Chart.Name }}
               containerPort: {{ .Values.appContainerPort }}
+          logging:
+            driver: "json-file"
+            options:
+              max-size: "10m"
+              max-file: "3"
           volumeMounts:
             - name: nginx-config-volume
               mountPath: /etc/nginx/conf.d
