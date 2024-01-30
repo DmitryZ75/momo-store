@@ -18,30 +18,77 @@ Nexus - https://nexus.blackrockdz.synology.me<br>
 
 # Развёртывание инфраструктуры и приложения.
 
-- Устанавливаем terraform и проверяем установленнцю версию<br>
-``wget https://hashicorp-releases.yandexcloud.net/terraform/1.5.5/terraform_1.5.5_linux_amd64.zip``<br>
-``unzip terraform_1.5.5_linux_amd64.zip``<br>
-```sudo mv terraform /usr/local/bin/```<br>
-```terraform -v```<br>
+- Устанавливаем terraform и проверяем установленную версию
+```bash
+wget https://hashicorp-releases.yandexcloud.net/terraform/1.5.5/terraform_1.5.5_linux_amd64.zip
+unzip terraform_1.5.5_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+terraform -v
+```
+- Добавим иформацию о Yandex Cloud
 
-- Устанавливаем Yandex CLI (https://cloud.yandex.ru/docs/cli/operations/install-cli), настраиваем свой профиль в яндекс облаке.
-- Через UI создаем федерацию, облако и folder, запоминаем id этих сущностей.
+```bash
+touch ~/.terraformrc
+echo 'provider_installation {
+  network_mirror {
+    url = "https://terraform-mirror.yandexcloud.net/"
+    include = ["registry.terraform.io/*/*"]
+  }
+  direct {
+    exclude = ["registry.terraform.io/*/*"]
+  }
+}' > ~/.terraformrc
+```
+- Устанавливаем Yandex CLI
+```bash
+curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+```
 - Инициализируем профиль ``yc init``. 
 - Получение данных о профиле - `yc config list`
 - Создаём yc токен `yc iam create-token`
 - Записываем значение token, cloud_id, folder_id s3_bucket_name в **infrastructure/s3-backend/terraform.tvars** и **infrastructure/main/terraform.tvars**
 - Создаём бакет для хранения состояния основного terraform. выполняем `terraform appply` в **infrastructure/s3-backend**
-- Инициализируем terraform: выполняем в папке **infrastructure/main/** команду ``terraform init``
+- Проверяем `terraform validate`.
+- Прогоняем `terraform plan`.
 - Выполняем `terraform apply`.
-- Получаем конфиг кластера командой ``kubectl get managed-kubernetes cluster --name momo-store-cluster get-credentials --external --force``
+- Экспортируем переменные командами
+```bash
+export AWS_SECRET_ACCESS_KEY=$(terraform output -raw s3-secret-key)
+export AWS_ACCESS_KEY_ID=$(terraform output -raw s3-access-key)
+```
+- Поднимаем кластер k8s:выполняем в папке **infrastructure/main/** команду ``terraform init``
+- Проверяем `terraform validate`.
+- Прогоняем `terraform plan`.
+- Выполняем `terraform apply`.
+- Устанавилваем kubectl:
+```bash 
+sudo snap install kubectl --classic
+```
+- Экспортируем конфигуцрацию кластера:
+```bash
+yc managed-kubernetes cluster get-credentials momo-store-cluster --external
+```
+- Получаем адрес Network Balancer для создания DNS-записей:
+```bash
+yc load-balancer network-load-balancer list --format json | jq -r '.[].id' | xargs -I {} yc load-balancer network-load-balancer get {} --format json | jq -r '.listeners'
+```
+•	momo-store.dmitryz.ru
+•	alertmanager.dmitryz.ru
+•	argocd.dmitryz.ru
+•	grafana.dmitryz.ru
+•	monitoring.dmitryz.ru
+
+
+
+
 - Поднимаем ingress-controller в кластере: выполняем в папке **infrastructure/ingress-nginx/** команду ``kubectl apply -f ingress-deploy.yaml``
 - Поднимаем cert-manager в кластере: выполняем в папке **infrastructure/cert-manager/** команду ``kubectl apply -f cert-manager-deploy.yaml``
 - Создаем ClusterIssuer для cert-manager: выполняем в папке **infrastructure/cert-manager/** команду ``kubectl apply -f clusterIssuer-deploy.yaml``
 - Поднимаем ArgoCD: выполняем в папке **infrastructure/argo-cd/** команду ``kubectl apply -f `` поочередно для namespace-argo-cd.yaml, deploy-argo-cd.yaml, ingress-service-argo-cd.yaml, user.yaml, user-policy.yaml
 - Получаем пароль от учетки администратора в ArgoCD: выполняем команду ``kubectl -n argocd get secret argocd-initial-admin-secret -o=jsonpath='{.data.password}' | base64 --decode``. Заходим в эту учетку через UI и меняем пароль.
-- Логинимся в ArgoCD через консоль командой ``argocd login argo-cd.valery-rayumov.ru``
-- Меняем пароль для созданной сервисной учетки "momo" командой ``argocd account update-password --account momo``
-- Запускаем деплой приложения: выполняем в папке **infrastructure/argo-cd/application** команду ``kubectl apply -f `` поочередно для repository-secret.yaml, app-project.yaml, application.yaml
+
+
+
 
 # Обновления приложения и инфраструктуры
 - При внесении изменений в директории "backend" или "frontend" запускается pipeline для формирования helm-чарта и его отправки в nexus.
