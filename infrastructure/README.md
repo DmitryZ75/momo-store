@@ -19,10 +19,10 @@ Nexus - https://nexus.blackrockdz.synology.me<br>
 # Развёртывание инфраструктуры и приложения.
 
 - Устанавливаем terraform и проверяем установленнцю версию<br>
-'''wget https://hashicorp-releases.yandexcloud.net/terraform/1.5.5/terraform_1.5.5_linux_amd64.zip'''<br>
-'''unzip terraform_1.5.5_linux_amd64.zip'''<br>
-'''sudo mv terraform /usr/local/bin/'''<br>
-'''terraform -v'''<br>
+``wget https://hashicorp-releases.yandexcloud.net/terraform/1.5.5/terraform_1.5.5_linux_amd64.zip``<br>
+``unzip terraform_1.5.5_linux_amd64.zip``<br>
+```sudo mv terraform /usr/local/bin/```<br>
+```terraform -v```<br>
 
 - Устанавливаем Yandex CLI (https://cloud.yandex.ru/docs/cli/operations/install-cli), настраиваем свой профиль в яндекс облаке.
 - Через UI создаем федерацию, облако и folder, запоминаем id этих сущностей.
