@@ -21,27 +21,27 @@ groups:
         description: "Detected HTTP 500 errors on the server."
 
     - alert: HighDelayPOSTRequests
-      expr: histogram_quantile(0.95, rate(http_server_requests_seconds_bucket{method="POST", status="200", uri="/api/orders"}[5m])) > 0.1
+      expr: histogram_quantile(0.95, rate(http_server_requests_seconds_bucket{method="POST", status="200", uri="/orders"}[5m])) > 0.1
       for: 5m
       labels:
         severity: warning
       annotations:
         summary: "High Delay in POST Requests"
-        description: "Detected high delay (95th percentile > 100ms) for successful POST requests to /api/orders over the last 5 minutes."
+        description: "Detected high delay (95th percentile > 100ms) for successful POST requests to /orders over the last 5 minutes."
 
-    - alert: ActuatorPrometheusError
-      expr: http_server_requests_seconds{uri="/actuator/prometheus"} > 0 and http_server_requests_seconds{status!="200", uri="/actuator/prometheus"} > 0
-      for: 2m
-      labels:
-        severity: warning
-      annotations:
-        summary: "Actuator Prometheus Endpoint Error"
-        description: "Detected errors on /actuator/prometheus endpoint in the last 2 minutes."
+    # - alert: ActuatorPrometheusError
+    #   expr: http_server_requests_seconds{uri="/actuator/prometheus"} > 0 and http_server_requests_seconds{status!="200", uri="/actuator/prometheus"} > 0
+    #   for: 2m
+    #   labels:
+    #     severity: warning
+    #   annotations:
+    #     summary: "Actuator Prometheus Endpoint Error"
+    #     description: "Detected errors on /actuator/prometheus endpoint in the last 2 minutes."
   
     - alert: SuccessfulGETRequest
-      expr: http_server_requests_seconds_count{method="GET", status="200", uri="/api/products"} > 0
+      expr: http_server_requests_seconds_count{method="GET", status="200", uri="/products"} > 0
       for: 1m
       labels:
         severity: critical
       annotations:
-        summary: "Successful GET request on /api/products"
+        summary: "Successful GET request on /products"
