@@ -1,17 +1,27 @@
-# Momo Store aka Пельменная №2
+# О проекте
+
+Приложение Momo Store позволяет пользователю заказывать лучшие пельмени! Это приложение было разработано для демонстрации примеров построения и поддержки процесса CI/CD на основе Gitlab CI, а также для реализации принципов DevOps, таких как IaaC (Инфраструктура как код) и инструментов DevOps (Terraform, Argo CD).
 
 <img width="900" alt="image" src="https://user-images.githubusercontent.com/9394918/167876466-2c530828-d658-4efe-9064-825626cc6db5.png">
 
-## Frontend
+См. дополнительные инструкции и файлы readme:
 
-```bash
-npm install
-NODE_ENV=production VUE_APP_API_URL=http://localhost:8081 npm run serve
-```
+для приложения в "./application"
 
-## Backend
+для инфраструктуры в "./infrastructure"
 
-```bash
-go run ./cmd/api
-go test -v ./... 
-```
+## Технологический стек
+- GO lang - для бэкенд-приложения.
+- VUE framework - для фронтенд-приложения.
+- Docker containers
+- Оркестрация Kubernetes
+
+
+## Используемые инструменты
+
+- GitLab CI - для хранения исходного кода приложения и инфраструктуры и выполнения процесса CI/CD.
+- SonarQube - анализ и оценка качества исходного кода.
+- Nexus - репозиторий артефактов проекта.
+- Yandex Cloud - для хранения инфраструктуры и приложения проекта.
+- Terraform - начальное развертывание сред разработки и продукции.
+- Argo CD - доставка приложений Kubernetes.
