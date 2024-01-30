@@ -1,12 +1,12 @@
 # Общее устройство
 
 Пельменная - https://momo-store.dmitryz.ru <br>
-ArgoCD - https://argocd.dmitryz.ru
-Grafana - https://grafana.dmitryz.ru
-Alertmanager - https://alertmanager.dmitryz.ru
-Prometheus - https://moonitoring.dmitryz.ru
-GitLab - https://gitlab.praktikum-services.ru
-Nexus - https://nexus.blackrockdz.synology.me
+ArgoCD - https://argocd.dmitryz.ru <br>
+Grafana - https://grafana.dmitryz.ru <br>
+Alertmanager - https://alertmanager.dmitryz.ru <br>
+Prometheus - https://moonitoring.dmitryz.ru <br>
+GitLab - https://gitlab.praktikum-services.ru<br>
+Nexus - https://nexus.blackrockdz.synology.me<br>
 
 Сервисы пельменной успешно функционируют в высокотехнологичном k8s-кластере, предоставленном Яндекс Cloud.
 
@@ -19,10 +19,10 @@ Nexus - https://nexus.blackrockdz.synology.me
 # Развёртывание инфраструктуры и приложения.
 
 - Устанавливаем terraform и проверяем установленнцю версию
-    ''wget https://hashicorp-releases.yandexcloud.net/terraform/1.5.5/terraform_1.5.5_linux_amd64.zip
-    unzip terraform_1.5.5_linux_amd64.zip
-    sudo mv terraform /usr/local/bin/
-    terraform -v''
+    ''wget https://hashicorp-releases.yandexcloud.net/terraform/1.5.5/terraform_1.5.5_linux_amd64.zip<br>
+    unzip terraform_1.5.5_linux_amd64.zip<br>
+    sudo mv terraform /usr/local/bin/<br>
+    terraform -v''<br>
 
 - Устанавливаем Yandex CLI (https://cloud.yandex.ru/docs/cli/operations/install-cli), настраиваем свой профиль в яндекс облаке.
 - Через UI создаем федерацию, облако и folder, запоминаем id этих сущностей.
