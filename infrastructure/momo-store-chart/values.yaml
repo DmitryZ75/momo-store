@@ -1,9 +1,11 @@
 # values.yaml
 
+# деплоим backend
+
 backend:
   enabled: true
 
-
+# деплоим frontend
 
 frontend:
   enabled: true

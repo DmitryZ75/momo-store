@@ -27,10 +27,10 @@ sonarqube-backend-sast:
   stage: test
   only:
     changes:
-      - backend/*
+      - application/backend/*
   image: sonarsource/sonar-scanner-cli:latest
   script:
-    - cd backend
+    - cd application/backend
     - sonar-scanner
       -Dsonar.projectKey=${SONAR_PROJECT_KEY_BACKEND}
       -Dsonar.host.url=${SONARQUBE_URL}
@@ -45,11 +45,11 @@ golang-test:
     entrypoint: [""]  
   stage: test
   script:
-    - cd backend
+    - cd application/backend
     - go test -v ./...        
   rules:
     - changes:
-        - backend/**/*
+        - application/backend/**/*
 
 # собираем приложение, и сохраняем ID артефактов
 
@@ -60,12 +60,12 @@ build-backend:
   stage: build
   script:
     - echo "ARTIFACT_JOB_ID=${CI_JOB_ID}" > CI_JOB_ID.txt 
-    - cd backend
+    - cd application/backend
     - ls
     - go build ./cmd/api
-    - cd .. 
+    - cd ../.. 
     - mkdir momo-${VERSION}
-    - mv backend/api momo-${VERSION}/momo-backend-${VERSION} 
+    - mv application/backend/api momo-${VERSION}/momo-backend-${VERSION} 
     - cd momo-${VERSION}
     - ls
     - du -sh momo-backend-${VERSION}
@@ -76,7 +76,7 @@ build-backend:
         dotenv: CI_JOB_ID.txt 
   rules:
     - changes:
-        - backend/**/*
+        - application/backend/**/*
 
 # копируем архив приложения в nexus
 
@@ -92,7 +92,7 @@ upload-release:
          curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file momo-backend-${VERSION}.tar.gz ${NEXUS_REPO_URL_BACK}/${VERSION}/momo-backend-${VERSION}.tar.gz
    rules:
       - changes:
-           - backend/**/*
+           - application/backend/**/*
 
 # готовим образ приожения
 
@@ -103,7 +103,7 @@ build-backend-image:
     - until docker info; do sleep 1; done
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - cd backend
+    - cd application/backend
     - >
       docker build
       --build-arg VERSION=$VERSION

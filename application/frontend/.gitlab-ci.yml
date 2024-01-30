@@ -24,14 +24,14 @@ build-frontend:
    stage: build
    script:
       - echo "ARTIFACT_JOB_ID=${CI_JOB_ID}" > CI_JOB_ID.txt 
-      - cd frontend 
+      - cd application/frontend 
       - npm install 
       - NODE_ENV=production VUE_APP_API_URL=https://momo-store.dmitryz.ru
       - npm run build             
-      - cd .. 
+      - cd ../.. 
       - ls -la
       - mkdir momo-${VERSION}
-      - mv frontend/dist momo-${VERSION}/momo-frontend-${VERSION} 
+      - mv application/frontend/dist momo-${VERSION}/momo-frontend-${VERSION} 
       - ls -la
       - pwd
       - cd momo-${VERSION}
@@ -44,7 +44,7 @@ build-frontend:
          dotenv: CI_JOB_ID.txt 
    rules:
       - changes:
-           - frontend/**/*
+           - application/frontend/**/*
 
 # прогоняем тесты
 
@@ -52,26 +52,25 @@ sonarqube-frontend-sast:
   stage: test
   only:
     changes:
-      - frontend/*
+      - application/frontend/**/*
   image: sonarsource/sonar-scanner-cli:latest
   script:
-    - cd frontend
+    - cd application/frontend
     - sonar-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY_FRONT} -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=${SONAR_LOGIN_FRONT} -Dsonar.projectName=${SONAR_PROJECT_NAME_FRONT}
   needs:
     - build-frontend
 
 
-# создаем образ дял фронтенда
+# создаем образ для фронтенда
 
 build-frontend-image:
   stage: build-image
   image: docker:20.10.12-dind-rootless
   before_script:
     - until docker info; do sleep 1; done
-    # переменные CI_REGISTRY_USER, CI_REGISTRY_PASSWORD, CI_REGISTRY генерятся Гитлабом, их задавать не надо
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD 
   script:
-    - cd frontend
+    - cd application/frontend
     - >
       docker build
       --build-arg VERSION=$VERSION
@@ -80,10 +79,9 @@ build-frontend-image:
     - docker push $CI_REGISTRY_IMAGE/momo-frontend:$CI_COMMIT_SHA
   only:
     changes:
-    - frontend/*
-
-
-
+    - application/frontend/**/*
+  needs:
+    - build-frontend
 
 
 # публикуем образ в container registry
@@ -104,13 +102,13 @@ upload-frontend-image:
     - docker push $CI_REGISTRY_IMAGE/momo-frontend:latest
   only:
     changes:
-    - frontend/**/*
+    - application/frontend/**/*
 
 telegram-notification-frontend:
   stage: notify
   only:
     changes:
-    - frontend/*
+    - application/frontend/**/*
     variables:
     - $CI_COMMIT_MESSAGE =~ /send notification/
   script:
@@ -132,7 +130,7 @@ upload-release:
       - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz ${NEXUS_REPO_URL_FRONT}/${VERSION}/momo-frontend-${VERSION}.tar.gz
    rules:
       - changes:
-           - frontend/**/*
+           - application/frontend/**/*
   
 #  environment: 
 #    name: review/$CI_COMMIT_REF_NAME
