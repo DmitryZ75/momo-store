@@ -5,6 +5,7 @@ serviceContainerPort: 8081
 serviceContainerTargerPort: 8081
 revisionHistoryLimit: 15
 imagePullPolicy: Always
+
 strategy:
   type: Recreate
   rollingUpdate:
