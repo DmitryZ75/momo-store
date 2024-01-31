@@ -18,18 +18,18 @@
 #    scrape_interval: 60s
 
 yandex_cloud_services:
-  # Пример значений для сервиса Managed PostgreSQL
-  - service: managed-postgresql
-    serviceId: c9q3ebbfe6l106v50eo4
-    folderId: b1g3nvv8sngeob717ei7
-    bearer_token: AQVN2lEABRzfufC54xF4basiVfH8kYeXRYXjkpzk
-    scrape_interval: 60s
-  # Пример значений для сервиса Managed MongoDB
-  - service: managed-mongodb
-    serviceId: c9q2e8urgnq5ofdncuf3
-    folderId: b1g3nvv8sngeob717ei7
-    bearer_token: AQVN2lEABRzfufC54xF4basiVfH8kYeXRYXjkpzk
-    scrape_interval: 60s  
+  # # Пример значений для сервиса Managed PostgreSQL
+  # - service: managed-postgresql
+  #   serviceId: c9q3ebbfe6l106v50eo4
+  #   folderId: b1g3nvv8sngeob717ei7
+  #   bearer_token: AQVN2lEABRzfufC54xF4basiVfH8kYeXRYXjkpzk
+  #   scrape_interval: 60s
+  # # Пример значений для сервиса Managed MongoDB
+  # - service: managed-mongodb
+  #   serviceId: c9q2e8urgnq5ofdncuf3
+  #   folderId: b1g3nvv8sngeob717ei7
+  #   bearer_token: AQVN2lEABRzfufC54xF4basiVfH8kYeXRYXjkpzk
+  #   scrape_interval: 60s  
 
   - service: managed-kubernetes
     serviceId: catodk2enlp20vvun657
