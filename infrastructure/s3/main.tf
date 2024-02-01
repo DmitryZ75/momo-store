@@ -16,7 +16,7 @@ variable "zone_id" {
 
 
 variable "s3_bucket_name" {
-  description = "Bucket name"
+  description = "terraform bucket name"
 }
 
 terraform {

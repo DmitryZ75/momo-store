@@ -10,9 +10,14 @@ variable "folder_id" {
   description = "Yandex folder id"
 }
 
-variable "s3_bucket_name" {
-  description = "Yandex s3 backet name"
+variable "image_bucket_name" {
+  description = "image backet name"
 }
+
+variable "loki_bucket_name" {
+  description = "loki bucket name"
+}
+
 
 variable "zone_id" {
   description = "Yandex zone id"
@@ -160,6 +165,14 @@ resource "yandex_resourcemanager_folder_iam_member" "k8s-clusters-agent" {
   member    = "serviceAccount:${yandex_iam_service_account.momo-store-service-account.id}"
 }
 
+# Сервисному аккаунту назначается роль "k8s.clusters.agent".
+resource "yandex_resourcemanager_folder_iam_member" "k8s-clusters-viewer" {
+  folder_id = var.folder_id
+  role      = "k8s.viewer"
+  member    = "serviceAccount:${yandex_iam_service_account.momo-store-service-account.id}"
+}
+
+
 # Сервисному аккаунту назначается роль "vpc.publicAdmin".
 resource "yandex_resourcemanager_folder_iam_member" "vpc-public-admin" {
   folder_id = var.folder_id
@@ -255,10 +268,10 @@ resource "yandex_iam_service_account_static_access_key" "s3_static_key" {
 }
 
 
-resource "yandex_storage_bucket" "momo-store-bucket" {
+resource "yandex_storage_bucket" "image-store-bucket" {
   access_key = yandex_iam_service_account_static_access_key.s3_static_key.access_key
   secret_key = yandex_iam_service_account_static_access_key.s3_static_key.secret_key
-  bucket = var.s3_bucket_name
+  bucket = var.image_bucket_name
 
   anonymous_access_flags {
     read = true
@@ -270,14 +283,32 @@ resource "yandex_storage_bucket" "momo-store-bucket" {
   force_destroy = true
 }
 
+resource "yandex_storage_bucket" "momo_loki_backend" {
+  access_key = yandex_iam_service_account_static_access_key.s3_static_key.access_key
+  secret_key = yandex_iam_service_account_static_access_key.s3_static_key.secret_key
+  bucket = var.loki_bucket_name
+
+  anonymous_access_flags {
+    read = false
+    list = false
+    config_read = false
+  }
+
+  max_size = 104857601
+  force_destroy = true
+
+}
+
+
 resource "yandex_storage_object" "images" {
   access_key = yandex_iam_service_account_static_access_key.s3_static_key.access_key
   secret_key = yandex_iam_service_account_static_access_key.s3_static_key.secret_key
   for_each = fileset("../images/", "*")
-  bucket   = yandex_storage_bucket.momo-store-bucket.id
+  bucket   = yandex_storage_bucket.image-store-bucket.id
   key      = each.value
   source   = "../images/${each.value}"
 } 
+
 
 provider "yandex" {
   token       = var.token
