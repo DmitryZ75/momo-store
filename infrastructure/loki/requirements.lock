@@ -1,0 +1,9 @@
+dependencies:
+- name: loki-distributed
+  repository: file://charts/loki-distributed
+  version: 0.1.1
+- name: promtail
+  repository: file://charts/promtail
+  version: 6.8.1
+digest: sha256:8f9bc09ffc35842734ecbb835d8f5b08b037b45b855853c857ad603db074933e
+generated: "2023-01-29T23:28:43.77798+02:00"
