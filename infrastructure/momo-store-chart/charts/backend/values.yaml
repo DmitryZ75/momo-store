@@ -1,5 +1,5 @@
 image: gitlab.praktikum-services.ru:5050/std-021-024/momo-store/momo-backend:latest
-replicas: 2
+replicas: 1
 appContainerPort: 8081
 serviceContainerPort: 8081
 serviceContainerTargerPort: 8081
