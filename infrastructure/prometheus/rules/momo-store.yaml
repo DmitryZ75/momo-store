@@ -3,13 +3,13 @@ groups:
   - name: Momo store rules
     rules:
 
-    # - alert: InstanceDownBackend
-    #   expr: up{app="backend"} == 0
-    #   for: 1m
-    #   labels:
-    #     severity: critical
-    #     project: "momo_store"
-    #     component: "Backend"
+    - alert: InstanceDownBackend
+      expr: up{app="backend"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        project: "momo_store"
+        component: "Backend"
 
     # - alert: InstanceDownFrontend
     #   expr: up{app="frontend"} == 0

@@ -13,23 +13,22 @@ data:
     rule_files:
       - "/config/*"
     scrape_configs:
+    
       - job_name: momo-store-backend
         metrics_path: '/metrics'
         static_configs:
           - targets: ['backend.momo-store.svc.cluster.local:8081']
             labels:
-              namespace: momo-store     
+              namespace: momo-store
+
       - job_name: momo-store-frontend
         static_configs:
           - targets: ['frontend.momo-store.svc.cluster.local:80']
-            labels:
-              namespace: momo-store          
+
+
       - job_name: kubernetes-pods
         kubernetes_sd_configs:
           - role: pod
-            namespaces:
-              names:
-                - {{ .Release.Namespace }}
         relabel_configs:
           - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
             action: keep
@@ -49,6 +48,9 @@ data:
           - source_labels: [__meta_kubernetes_pod_name]
             action: replace
             target_label: kubernetes_pod_name
+
+
+
     {{- range $yandex := .Values.yandex_cloud_services }}
       - job_name: yandex_service_{{ $yandex.service }}
         metrics_path: '/monitoring/v2/prometheusMetrics'
@@ -71,3 +73,27 @@ data:
           static_configs:
             - targets:
                 - "alertmanager:9093"
+
+
+
+
+# - job_name: 'kube-state-metrics'
+#   static_configs:
+#      - targets: ['kmetrics-server.kube-system.svc.cluster.local:8080']      
+
+
+      # - job_name: 'kubernetes-service-endpoints'
+      #   kubernetes_sd_configs:
+      #     - role: endpoints
+      #   relabel_configs:
+      #     - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+      #       action: keep
+      #       regex: true
+      #     # Другие relabel_configs для kubernetes-service-endpoints
+
+
+      # - job_name: 'metric-provider'
+      #   static_configs:
+      #     - targets: ['metric-provider.monitoring.svc.cluster.local:443']
+
+      
