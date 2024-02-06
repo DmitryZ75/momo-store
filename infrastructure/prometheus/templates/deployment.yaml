@@ -1,24 +1,3 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: pod-reader
-rules:
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: pod-reader-binding
-subjects:
-- kind: ServiceAccount
-  name: default
-  namespace: {{ .Release.Namespace }}
-roleRef:
-  kind: ClusterRole
-  name: pod-reader
-  apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -43,6 +22,7 @@ spec:
         co.elastic.logs/timezone: Europe/Moscow
         co.elastic.logs/exclude_lines: skipping duplicate scrape target with identical labels;
     spec:
+      serviceAccountName: prometheus
       terminationGracePeriodSeconds: 90
       restartPolicy: Always
       volumes:

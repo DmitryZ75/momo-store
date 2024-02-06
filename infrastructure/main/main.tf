@@ -23,12 +23,6 @@ variable "zone_id" {
   description = "Yandex zone id"
 }
 
-# locals {
-#   cloud_id = var.cloud_id
-#   folder_id = var.folder_id
-#   image_bucket_name = var.s3_bucket_name
-# }
-
 # Создание сети
 
 resource "yandex_vpc_network" "momo-store-network" {
@@ -165,13 +159,19 @@ resource "yandex_resourcemanager_folder_iam_member" "k8s-clusters-agent" {
   member    = "serviceAccount:${yandex_iam_service_account.momo-store-service-account.id}"
 }
 
-# Сервисному аккаунту назначается роль "k8s.clusters.agent".
-resource "yandex_resourcemanager_folder_iam_member" "k8s-clusters-viewer" {
+# Сервисному аккаунту назначается роль "monitoring.editor".
+resource "yandex_resourcemanager_folder_iam_member" "monitoring-editor" {
   folder_id = var.folder_id
-  role      = "k8s.viewer"
+  role      = "monitoring.editor"
   member    = "serviceAccount:${yandex_iam_service_account.momo-store-service-account.id}"
 }
 
+# Сервисному аккаунту назначается роль "logging.reader".
+resource "yandex_resourcemanager_folder_iam_member" "logging-reader" {
+  folder_id = var.folder_id
+  role      = "logging.reader"
+  member    = "serviceAccount:${yandex_iam_service_account.momo-store-service-account.id}"
+}
 
 # Сервисному аккаунту назначается роль "vpc.publicAdmin".
 resource "yandex_resourcemanager_folder_iam_member" "vpc-public-admin" {
@@ -316,7 +316,6 @@ provider "yandex" {
   folder_id   = var.folder_id
   zone        = var.zone_id
 }
-
 
 # сохранение состояния
 

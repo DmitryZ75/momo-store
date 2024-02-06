@@ -34,14 +34,8 @@ yandex_cloud_services:
   - service: managed-kubernetes
     serviceId: catodk2enlp20vvun657
     folderId: b1gruij030ve9th5tfaq
-    bearer_token: AQVN2wzcDSpsS4dOq447aiKePBm4PIGuygA8bMCu
+    bearer_token: AQVN2A_rsFmI2vJCi-7k8a-YnUdowlc6she66ZsQ
     scrape_interval: 60s  
 
-host: "momo-store.dmitryz.ru"
+host: "monitoring.dmitryz.ru"
 
-#b1g3nvv8sngeob717ei7
-#c9q3ebbfe6l106v50eo4
-#c9q2e8urgnq5ofdncuf3
-
-#ajeqa400a76vn7objooh
-#AQVN2lEABRzfufC54xF4basiVfH8kYeXRYXjkpzk

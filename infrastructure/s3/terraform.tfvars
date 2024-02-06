@@ -1,5 +1,5 @@
 cloud_id  = "b1gpnf75j66diuf30tjv"
 folder_id = "b1gruij030ve9th5tfaq"
 zone_id   = "ru-central1-b"
-token     = "t1.9euelZqLns6WjpGZkJOTj5yVm4mJi-3rnpWajszIxpaPyc-dz4mayI_LyZfl8_cuNSdS-e85U1xx_d3z925jJFL57zlTXHH9zef1656VmpXIyM-Xx8iNmY2Jns-Yxpeb7_zF656VmpXIyM-Xx8iNmY2Jns-Yxpeb.LnvD2K20bjD_uOB1iha0wEfaRHKv7ufXwRER2AwTMAAI54cCGmW7LZpmOuB8Cwi5zPKzJUO6VYFfItaAzMp_Bw"
+token     = "t1.9euelZqdzpKQz5Sdk8iVnJaMkM-Sie3rnpWajszIxpaPyc-dz4mayI_LyZfl8_dNdXdR-e8CYygX_d3z9w0kdVH57wJjKBf9zef1656VmpDHnY6cls-MycaXz8vOlMaJ7_zF656VmpDHnY6cls-MycaXz8vOlMaJ.yq8fsvCh58v_TlDtxzEJzb-uCP0-FmpJ5kH4nRvaRg20ktM7GrZRYq0NfPlBBmCQiUNa9VhJSjej1NHju4YKAg"
 s3_bucket_name = "terraform-dmitryz-bucket"
